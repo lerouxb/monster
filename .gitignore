@@ -1,0 +1,12 @@
+/node_modules
+/tsconfig.tsbuildinfo
+/.nyc_output/
+/coverage/
+.DS_Store
+npm-debug.log
+/dist/
+/.idea/
+/.vscode/*
+!/.vscode/launch.json
+/temp
+/tmp

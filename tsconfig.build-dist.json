@@ -1,0 +1,15 @@
+// This tsconfig.json drives compiling the src/ directory into the dist/ directory
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "temp/tsconfig.build-dist.tsbuildinfo",
+    "allowJs": false,
+    "rootDirs": ["temp", "."]
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
