@@ -10,18 +10,13 @@ async function main() {
   console.log('Connecting to server...');
   await client.connect();
 
-  await startShell({ client });
+  startShell({ client });
 }
 
-async function startShell({ client }: { client: MongoClient }) {
+function startShell({ client }: { client: MongoClient }) {
   const shellGlobals = {
     url,
     client
-  };
-
-  const shellTypes = {
-    url: 'string',
-    client: 'MongoClient'
   };
 
   (global as any)._shellGlobals = shellGlobals;
@@ -35,11 +30,9 @@ async function startShell({ client }: { client: MongoClient }) {
   const r = repl.start();
 
   const startLines = [];
-  startLines.push('import type { MongoClient } from \'mongodb\';');
   startLines.push('const _globals = (global as any)._shellGlobals;');
   for (const key of Object.keys(shellGlobals).slice()) {
-    const type: string = (shellTypes as any)[key] ?? 'any';
-    startLines.push(`const ${key}: ${type} = _globals['${key}'];`);
+    startLines.push(`const ${key} = _globals['${key}'];`);
   }
 
   for (const line of startLines) {
