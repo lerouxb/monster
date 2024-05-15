@@ -6,6 +6,7 @@
   "bin": {
     "monster": "dist/bin.js"
   },
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf temp dist",
@@ -13,7 +14,11 @@
     "build": "npm run build-tsc",
     "build-tsc": "tsc -b ./tsconfig.build-dist.json",
     "prepack": "npm run clean && npm run build",
-    "prepare": "workaround-broken-npm-prepack-behavior prepack"
+    "prepare": "workaround-broken-npm-prepack-behavior prepack",
+    "eslint": "eslint",
+    "prettier": "prettier",
+    "lint": "npm run eslint . && npm run prettier -- --check .",
+    "check": "npm run lint"
   },
   "author": "Le Roux Bodenstein",
   "license": "ISC",
@@ -21,7 +26,13 @@
     "mongodb": "^6.6.1",
     "pretty-repl": "git+https://github.com/mongodb-js/pretty-repl.git#ts-syntax",
     "ts-node": "git+https://github.com/lerouxb/ts-node.git#ecddb7e46483e0f582a309802e34b83d64fb321c",
-    "typescript": "4.7.4",
     "workaround-broken-npm-prepack-behavior": "https://github.com/cspotcode/workaround-broken-npm-prepack-behavior#1a7adbbb8a527784daf97edad6ba42d6e96611f6"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "3.2.5",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.9.0"
   }
 }

@@ -9,7 +9,5 @@
     "allowJs": false,
     "rootDirs": ["temp", "."]
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

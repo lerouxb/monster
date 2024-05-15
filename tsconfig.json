@@ -18,16 +18,13 @@
     "stripInternal": true,
     "incremental": true,
     "skipLibCheck": true,
-    "importsNotUsedAsValues": "error",
-    "allowJs": true,
+    "allowJs": true
 
     // Enable to assist in sanity-checking your changes to JS files, but note you will see many unrelated type errors!
     // "checkJs": true,
     // "noImplicitAny": false
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "typedocOptions": {
     "entryPoints": ["./src/index.ts"],
     "readme": "none",
