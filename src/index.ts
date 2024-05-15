@@ -19,13 +19,16 @@ export function startShell({ url, client }: MonsterOptions) {
   repl.setService(service);
 
   console.log("Starting MONSTER..."); // sanity check
-  const r = repl.start();
+  // TODO: print a summary of what we're connected to, what versions we're
+  // running with and so on.
 
   const startLines = [];
   startLines.push("const _globals = (global as any)._shellGlobals;");
   for (const key of Object.keys(shellGlobals).slice()) {
     startLines.push(`const ${key} = _globals['${key}'];`);
   }
+
+  const r = repl.start();
 
   for (const line of startLines) {
     repl.evalCode(line);

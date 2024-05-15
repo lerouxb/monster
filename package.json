@@ -6,17 +6,17 @@
   "bin": {
     "monster": "dist/bin.js"
   },
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf temp dist",
     "rebuild": "npm run clean && npm run build",
     "build": "npm run build-tsc",
-    "build-tsc": "tsc -b ./tsconfig.build-dist.json",
+    "build-tsc": "tsc  -b ./tsconfig.build-dist.json",
     "prepack": "npm run clean && npm run build",
     "prepare": "workaround-broken-npm-prepack-behavior prepack",
     "eslint": "eslint",
     "prettier": "prettier",
+    "prettier-fix": "prettier -- --fix .",
     "lint": "npm run eslint . && npm run prettier -- --check .",
     "check": "npm run lint"
   },
