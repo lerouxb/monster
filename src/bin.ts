@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-import type { Command, Flags, MonsterOptions, Args } from './types';
+import { loadConfig } from './helpers/config';
+import { lookupEnvInConfig } from './helpers/environments';
+import type { Command, Flags, MonsterOptions, Args, Config } from './types';
 import { knownCommands } from './types';
 
 
@@ -69,73 +71,81 @@ function processArgs(argv: string[]): Args {
   return { url, env, command, flags, positional };
 }
 
-interface Environment {
-  url: string
-}
-
-async function lookupEnv(env: string): Promise<Environment> {
-  // TODO
-  return Promise.reject(`Unable to find env "${env}"`);
-}
-
-async function lookupUrlFromArgs(args: Args): Promise<string|undefined> {
+function lookupUrlFromArgs(args: Args, config: Config): string|undefined {
   if (args.url) {
     return args.url;
   }
 
   if (args.env) {
-    return (await lookupEnv(args.env)).url;
+    return lookupEnvInConfig(args.env, config).url;
   }
 
   return undefined;
 }
 
-async function runCommandWithoutClient(args: Args) {
+async function main() {
+  const config = await loadConfig();
+  // TODO: `monster start|stop`?
+
+  const args = processArgs(process.argv);
+  const url = lookupUrlFromArgs(args, config);
+
   // TODO: help
   // TODO: `monster init` for setting up package.json/typescript/vscode, .gitignore
   // TODO: `monster update` for updating the above to match the versions in monster
   // TODO: `monster touch`
   // TODO: `monster start|stop|ls`?
 
+  if (args.command === 'help') {
+    const { runCommand } = await import('./commands/help');
+    return await runCommand(args, config);
+  }
+
   if (args.command === 'init') {
     const { runCommand } = await import('./commands/init');
-    return await runCommand(args);
+    return await runCommand(args, config);
   }
 
   if (args.command === 'touch') {
     const { runCommand } = await import('./commands/touch');
-    return await runCommand(args);
+    return await runCommand(args, config);
   }
 
-  // by default just print help
-  const { runCommand } = await import('./commands/help');
-  return await runCommand(args);
-}
-
-async function main() {
-  // TODO: support for connection string env var, env name env var, env names, monster.config.js
-  // TODO: `monster start|stop`?
-
-  const args = processArgs(process.argv);
-  const url = await lookupUrlFromArgs(args);
-
-  if (!url) {
-    return await runCommandWithoutClient(args);
+  if (args.command === 'start') {
+    const { runCommand } = await import('./commands/start');
+    return await runCommand(args, config);
   }
+
+  if (args.command === 'stop') {
+    const { runCommand } = await import('./commands/stop');
+    return await runCommand(args, config);
+  }
+
+  // everything from here on out should be commands that require a connection
 
   if (args.command && !['run'].includes(args.command)) {
     throw new Error(`Command ${args.command} specified which does not work with a connection.`);
   }
 
+  if (!url) {
+    throw new Error('No connection specified');
+  }
+
   const { MongoClient } = await import('mongodb');
 
   const client = new MongoClient(url);
-  console.log("Connecting to server...");
+  if (args.env) {
+    console.log(`Connecting to ${url}...`);
+  }
+  else {
+    console.log('Connecting to server...');
+  }
   await client.connect();
 
   // TODO: add helpers and stick it on MonsterOptions?
 
   const options: MonsterOptions = {
+    config,
     args,
     url,
     client,

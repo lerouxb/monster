@@ -1,4 +1,4 @@
-import type { Args } from '../types';
+import type { Args, Config } from '../types';
 import { getVersions } from '../helpers/versions';
 
 type List = [string, string][];
@@ -16,7 +16,7 @@ function printList(list: List) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function runCommand(args: Args) {
+export async function runCommand(args: Args, config: Config) {
   const versions = await getVersions();
   const versionList: List = [
     ['node', versions.node],
