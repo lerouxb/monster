@@ -1,5 +1,5 @@
 {
-  "name": "monster",
+  "name": "monster-shell",
   "version": "0.0.1",
   "description": "MONgodb Shell in your TERminal",
   "main": "dist/index.js",
