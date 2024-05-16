@@ -106,6 +106,11 @@ async function main() {
     return await runCommand(args, config);
   }
 
+  if (args.command === 'update') {
+    const { runCommand } = await import('./commands/update');
+    return await runCommand(args, config);
+  }
+
   if (args.command === 'touch') {
     const { runCommand } = await import('./commands/touch');
     return await runCommand(args, config);
@@ -123,12 +128,12 @@ async function main() {
 
   // everything from here on out should be commands that require a connection
 
-  if (args.command && !['run'].includes(args.command)) {
-    throw new Error(`Command ${args.command} specified which does not work with a connection.`);
-  }
-
   if (!url) {
     throw new Error('No connection specified');
+  }
+
+  if (args.command && !['run'].includes(args.command)) {
+    throw new Error(`Command ${args.command} specified which does not work with a connection.`);
   }
 
   const { MongoClient } = await import('mongodb');
