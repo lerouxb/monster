@@ -22,11 +22,13 @@ Features
 Install
 =======
 
+Once this is actually published:
+
 ```
 npm install -g monster-term
 ```
 
-or during development:
+or for now during development:
 
 ```
 cd ~/src
