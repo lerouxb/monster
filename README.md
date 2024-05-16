@@ -28,6 +28,15 @@ Install
 npm install -g monster-term
 ```
 
+or during development:
+
+```
+cd ~/src
+git clone https://github.com/lerouxb/monster.git
+npm run build && npm install -g
+npm link
+```
+
 Connect to MongoDB and start a REPL
 ===================================
 
