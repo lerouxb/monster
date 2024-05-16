@@ -1,13 +1,10 @@
 import * as tsNode from "ts-node";
-import type { MonsterOptions } from './types';
+import type { MonsterOptions } from '../types';
 
-export function startShell({ url, client }: MonsterOptions) {
-  const shellGlobals = {
-    url,
-    client,
-  };
+export function runCommandWithClient(options: MonsterOptions) {
+  // TODO: kill sessions on ctrl-c
 
-  (global as any)._shellGlobals = shellGlobals;
+  (global as any)._shellGlobals = options;
 
   const repl = tsNode.createRepl();
   const service = tsNode.create({ ...repl.evalAwarePartialHost });
@@ -19,7 +16,7 @@ export function startShell({ url, client }: MonsterOptions) {
 
   const startLines = [];
   startLines.push("const _globals = (global as any)._shellGlobals;");
-  for (const key of Object.keys(shellGlobals).slice()) {
+  for (const key of Object.keys(options).slice()) {
     startLines.push(`const ${key} = _globals['${key}'];`);
   }
 

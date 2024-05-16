@@ -1,8 +1,8 @@
 import path from 'path';
-import type { MonsterOptions } from "./types";
+import type { MonsterOptions } from "../types";
 
-export async function runScript(filename: string, options: MonsterOptions) {
-  filename = path.resolve(filename);
+export async function runCommandWithClient(options: MonsterOptions) {
+  const filename = path.resolve(options.args.positional[0]);
 
   if (filename.endsWith('.ts')) {
     const tsNode = await import('ts-node');
