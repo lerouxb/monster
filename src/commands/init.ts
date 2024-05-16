@@ -15,6 +15,7 @@ export async function runCommand(args: Args, config: Config) {
 
   const packageJSONPath = path.join(dirname, 'package.json');
   const monsterConfigJSONPath = path.join(dirname, 'monster.config.json');
+  const tsConfigJSONPath = path.join(dirname, 'tsconfig.json');
 
   if (await checkFileExists(packageJSONPath)) {
     throw new Error('package.json already exists');
@@ -50,17 +51,38 @@ export async function runCommand(args: Args, config: Config) {
 
   const monsterConfigJSONString = JSON.stringify(monsterConfigJSON, null, 2);
 
+  // TODO: no idea what the minimum or ideal is here and how to keep it in sync
+  const tsConfigJSON = {
+    compilerOptions: {
+      target: 'es2020',
+      module: 'commonjs',
+      moduleResolution: 'node',
+      strict: true,
+      allowJs: true,
+      types: ['node'],
+      esModuleInterop: true
+    },
+  }
+
+  const tsConfigJSONString = JSON.stringify(tsConfigJSON, null, 2);
+
   console.log(`About to write to ${packageJSONPath}:`);
-  console.log('');
+  console.log();
   console.log(packageJSONString);
 
-  console.log('');
+  console.log();
 
   console.log(`and to ${monsterConfigJSONPath}:`);
-  console.log('');
+  console.log();
   console.log(monsterConfigJSONString);
 
-  console.log('');
+  console.log();
+
+  console.log(`and to ${tsConfigJSONPath}:`);
+  console.log();
+  console.log(tsConfigJSONString);
+
+  console.log();
 
   const rl = readline.createInterface({ input, output });
   const answer = await rl.question('Is this OK? (yes)? ');
@@ -72,6 +94,7 @@ export async function runCommand(args: Args, config: Config) {
 
   await fs.writeFile(packageJSONPath, packageJSONString, 'utf8');
   await fs.writeFile(monsterConfigJSONPath, monsterConfigJSONString, 'utf8');
+  await fs.writeFile(tsConfigJSONPath, tsConfigJSONString, 'utf8');
 
   if (args.flags.link) {
     // requries that you `npm link` in the checked out code first
