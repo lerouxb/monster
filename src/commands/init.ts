@@ -25,6 +25,10 @@ export async function runCommand(args: Args, config: Config) {
     throw new Error('monster.config.json already exists');
   }
 
+  if (await checkFileExists(tsConfigJSONPath)) {
+    throw new Error('tsconfig.json already exists');
+  }
+
   const basename = path.basename(dirname);
 
   const monsterShellVersion = (await getVersions())['monster-shell'];
