@@ -1,41 +1,38 @@
 #!/usr/bin/env node
 
-import { loadConfig } from './helpers/config';
-import { lookupEnvInConfig } from './helpers/environments';
-import type { Command, Flags, MonsterOptions, Args, Config } from './types';
-import { knownCommands } from './types';
-
+import { loadConfig } from "./helpers/config";
+import { lookupEnvInConfig } from "./helpers/environments";
+import type { Command, Flags, MonsterOptions, Args, Config } from "./types";
+import { knownCommands } from "./types";
 
 function isCommand(value: string) {
   return knownCommands.includes(value);
 }
 
 function isConnectionString(value: string) {
-  return value.startsWith('mongodb://') || value.startsWith('mongodb+srv://');
+  return value.startsWith("mongodb://") || value.startsWith("mongodb+srv://");
 }
 
 function processArgs(argv: string[]): Args {
   const args = argv.slice(2);
 
-  let url: string|undefined;
-  let env: string|undefined;
-  let command: Command|undefined;
-  const positional: string[] = []
+  let url: string | undefined;
+  let env: string | undefined;
+  let command: Command | undefined;
+  const positional: string[] = [];
   const flags: Flags = {};
 
   for (const arg of args) {
-    if (arg.startsWith('--')) {
+    if (arg.startsWith("--")) {
       // --foo, --foo=bar or --foo=bar=baz
       const match = arg.match(/^--(?<key>[^=]+)(=(?<value>.*))?/);
-      flags[match?.groups?.key ?? ''] = match?.groups?.value ?? true;
-    }
-    else if (arg.startsWith('-')) {
+      flags[match?.groups?.key ?? ""] = match?.groups?.value ?? true;
+    } else if (arg.startsWith("-")) {
       for (const letter of arg.slice(1)) {
-        if (typeof(flags[letter]) === 'number') {
+        if (typeof flags[letter] === "number") {
           // -vvv results in { v: 3 }
           flags[letter] = (flags[letter] as number) + 1;
-        }
-        else {
+        } else {
           flags[letter] = 1;
         }
       }
@@ -61,8 +58,7 @@ function processArgs(argv: string[]): Args {
         // url or env followed by a command
         command = second as Command;
         positional.splice(0, 2);
-      }
-      else {
+      } else {
         positional.splice(0, 1);
       }
     }
@@ -71,7 +67,7 @@ function processArgs(argv: string[]): Args {
   return { url, env, command, flags, positional };
 }
 
-function lookupUrlFromArgs(args: Args, config: Config): string|undefined {
+function lookupUrlFromArgs(args: Args, config: Config): string | undefined {
   if (args.url) {
     return args.url;
   }
@@ -96,54 +92,55 @@ async function main() {
   // TODO: `monster touch`
   // TODO: `monster start|stop|ls`?
 
-  if (args.command === 'help') {
-    const { runCommand } = await import('./commands/help');
+  if (args.command === "help") {
+    const { runCommand } = await import("./commands/help");
     return await runCommand(args, config);
   }
 
-  if (args.command === 'init') {
-    const { runCommand } = await import('./commands/init');
+  if (args.command === "init") {
+    const { runCommand } = await import("./commands/init");
     return await runCommand(args, config);
   }
 
-  if (args.command === 'update') {
-    const { runCommand } = await import('./commands/update');
+  if (args.command === "update") {
+    const { runCommand } = await import("./commands/update");
     return await runCommand(args, config);
   }
 
-  if (args.command === 'touch') {
-    const { runCommand } = await import('./commands/touch');
+  if (args.command === "touch") {
+    const { runCommand } = await import("./commands/touch");
     return await runCommand(args, config);
   }
 
-  if (args.command === 'start') {
-    const { runCommand } = await import('./commands/start');
+  if (args.command === "start") {
+    const { runCommand } = await import("./commands/start");
     return await runCommand(args, config);
   }
 
-  if (args.command === 'stop') {
-    const { runCommand } = await import('./commands/stop');
+  if (args.command === "stop") {
+    const { runCommand } = await import("./commands/stop");
     return await runCommand(args, config);
   }
 
   // everything from here on out should be commands that require a connection
 
   if (!url) {
-    throw new Error('No connection specified');
+    throw new Error("No connection specified");
   }
 
-  if (args.command && !['run'].includes(args.command)) {
-    throw new Error(`Command ${args.command} specified which does not work with a connection.`);
+  if (args.command && !["run"].includes(args.command)) {
+    throw new Error(
+      `Command ${args.command} specified which does not work with a connection.`,
+    );
   }
 
-  const { MongoClient } = await import('mongodb');
+  const { MongoClient } = await import("mongodb");
 
   const client = new MongoClient(url);
   if (args.env) {
     console.log(`Connecting to ${url}...`);
-  }
-  else {
-    console.log('Connecting to server...');
+  } else {
+    console.log("Connecting to server...");
   }
   await client.connect();
 
@@ -156,14 +153,14 @@ async function main() {
     client,
   };
 
-  if (args.command === 'run') {
-    const { runCommandWithClient } = await import('./commands/run');
+  if (args.command === "run") {
+    const { runCommandWithClient } = await import("./commands/run");
     await runCommandWithClient(options);
     client.close();
     return;
   }
 
-  const { runCommandWithClient } = await import('./commands/shell');
+  const { runCommandWithClient } = await import("./commands/shell");
   const repl = runCommandWithClient(options);
 
   repl.on("exit", function () {

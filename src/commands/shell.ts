@@ -1,5 +1,5 @@
 import * as tsNode from "ts-node";
-import type { MonsterOptions } from '../types';
+import type { MonsterOptions } from "../types";
 
 export function runCommandWithClient(options: MonsterOptions) {
   // TODO: kill sessions on ctrl-c

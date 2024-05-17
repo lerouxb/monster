@@ -1,6 +1,9 @@
-import type { Config, Environment } from '../types';
+import type { Config, Environment } from "../types";
 
-export function lookupEnvInConfig(envName: string, config: Config): Environment {
+export function lookupEnvInConfig(
+  envName: string,
+  config: Config,
+): Environment {
   const environment = config.environments[envName];
 
   if (!environment) {
