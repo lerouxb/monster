@@ -58,9 +58,9 @@ export async function runCommand(args: Args, config: Config) {
   // TODO: no idea what the minimum or ideal is here and how to keep it in sync
   const tsConfigJSON = {
     compilerOptions: {
-      target: "es2020",
-      module: "commonjs",
-      moduleResolution: "node",
+      target: 'es2020',
+      module: 'commonjs',
+      moduleResolution: 'node',
       strict: true,
       allowJs: true,
       types: ["node"],

@@ -7,7 +7,18 @@ export function runCommandWithClient(options: MonsterOptions) {
   (global as any)._shellGlobals = options;
 
   const repl = tsNode.createRepl();
-  const service = tsNode.create({ ...repl.evalAwarePartialHost });
+  const service = tsNode.create({
+    ...repl.evalAwarePartialHost,
+    compilerOptions: {
+      target: 'es2020',
+      module: 'commonjs',
+      moduleResolution: 'node',
+      strict: true,
+      allowJs: true,
+      types: ["node"],
+      esModuleInterop: true,
+    }
+  });
   repl.setService(service);
 
   console.log("Starting MONSTER..."); // sanity check
