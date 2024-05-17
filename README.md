@@ -10,9 +10,9 @@ A minimalist MongoDB shell supporting TypeScript, syntax highlighting and more.
 
 # Rationale
 
-I wanted to see what's possible if you're willing to lose backwards
-compatibility with the legacy `mongo` shell and just drop the user straight into
-a TypeScript REPL with a connected mongodb client.
+I wanted to expore what's possible if you're willing to lose
+backwards-compatibility with the legacy `mongo` shell and just drop the user
+straight into a TypeScript REPL with a connected MongoDB client.
 
 Furthermore, I want to make it easy to write scripts using the node driver
 directly that are decoupled from the connection string. You should be able to
