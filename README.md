@@ -8,6 +8,20 @@
 
 A minimalist MongoDB shell supporting TypeScript, syntax highlighting and more.
 
+# Rationale
+
+I wanted to see what's possible if you're willing to lose backwards
+compatibility with the legacy `mongo` shell and just drop the user straight into
+a TypeScript REPL with a connected mongodb client.
+
+Furthermore, I want to make it easy to write scripts using the node driver
+directly that are decoupled from the connection string. You should be able to
+write these scripts in your IDE of choice, safely commit to git and share your
+scripts with your team.
+
+Monster also sets up TypeScript configuration and other boilerplate automatically
+without users needing to know how the node/npm ecosystem works.
+
 # Features
 
 - TypeScript support via [ts-node](https://github.com/TypeStrong/ts-node)
