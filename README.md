@@ -6,12 +6,12 @@
 
                       [MONgodb Shell in your TERminal]
 
-A minimalist MongoDB shell supporting TypeScript, syntax hilighting and more.
+A minimalist MongoDB shell supporting TypeScript, syntax highlighting and more.
 
 # Features
 
 - TypeScript support via [ts-node](https://github.com/TypeStrong/ts-node)
-- Syntax hilighting via [@mongodb-js/pretty-repl](https://github.com/mongodb-js/pretty-repl)
+- Syntax highlighting via [@mongodb-js/pretty-repl](https://github.com/mongodb-js/pretty-repl)
 - Just the [MongoDB Node.js Driver](https://github.com/mongodb/node-mongodb-native)'s connected client with no further magic
 - Easily manage and share development environment setups
 - Decouple script writing from execution
