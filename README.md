@@ -49,13 +49,15 @@ npm run build && npm install -g
 npm link
 ```
 
-# Connect to MongoDB and start a REPL
+# Usage
+
+## Connect to MongoDB and start a REPL
 
 ```
 monster mongodb://127.0.0.1:27017/
 ```
 
-# Init a workspace
+## Init a workspace
 
 ```
 mkdir ~/src/my-scripts
@@ -74,39 +76,39 @@ checked out locally, you can:
 ~/src/my-scripts$ monster init --link
 ```
 
-# Start a new script
+## Start a new script
 
 ```
 monster touch my-script.ts
 ```
 
-# Edit it in vscode
+## Edit it in vscode
 
 ```
 code my-script.ts
 ```
 
-# Manage and use environments
+## Manage and use environments
 
-## Start an environment specified in monster.conf.json
+### Start an environment specified in monster.conf.json
 
 ```
 monster dev start
 ```
 
-## Connect and open a REPL for that environment
+### Connect and open a REPL for that environment
 
 ```
 monster dev
 ```
 
-## Run your script against it
+### Run your script against it
 
 ```
 monster dev run my-script.ts
 ```
 
-## Run your script against an arbitrary different server
+### Run your script against an arbitrary different server
 
 ```
 monster mongodb://127.0.0.1:27017/ run my-script.ts
@@ -115,13 +117,13 @@ monster mongodb://127.0.0.1:27017/ run my-script.ts
 Useful once you've tested your script locally and you want to run it against a
 staging or production environment.
 
-## Stop your environment again
+### Stop your environment again
 
 ```
 monster dev stop
 ```
 
-# Update
+## Update
 
 If you install a newer version of monster, update the version in your workspace to match so that the types match:
 
@@ -129,7 +131,7 @@ If you install a newer version of monster, update the version in your workspace 
 monster update
 ```
 
-# Help
+## Help
 
 ```
 monster help
